@@ -27,6 +27,7 @@ body {
 }
 a { color: inherit; }
 .site-header {
+  position: relative;
   color: var(--white);
   background: var(--navy);
   padding: 22px 6%;
@@ -96,10 +97,12 @@ nav a + a { border-top: 1px solid #edf2f4; }
 nav { background: #fff; border-bottom: 1px solid var(--line); }
 .nav-inner {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px 34px;
-  padding: 15px 20px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 0;
+  padding: 8px 0;
 }
 nav a {
   text-decoration: none;
