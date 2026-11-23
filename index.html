@@ -35,6 +35,42 @@ a { color: inherit; }
   width: min(1120px, 100%);
   margin: 0 auto;
 }
+.header-inner { position: relative; padding-left: 58px; }
+.menu-toggle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+.menu-toggle span { display: block; width: 20px; height: 2px; border-radius: 2px; background: #fff; }
+.menu-toggle:hover, .menu-toggle:focus-visible { background: rgba(255,255,255,.12); outline: 2px solid #b9e4ef; outline-offset: 2px; }
+nav {
+  display: none;
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: max(6%, calc((100% - 1120px) / 2));
+  width: 245px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 12px 28px rgba(9,43,69,.18);
+}
+nav.open { display: block; }
+.nav-inner { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 0; }
+nav a { display: block; padding: 12px 18px; }
+nav a + a { border-top: 1px solid #edf2f4; }
 .brand {
   display: flex;
   align-items: center;
@@ -170,7 +206,7 @@ footer p { margin: 0; }
 @media (max-width: 720px) {
   .services-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
-  .nav-inner { gap: 10px 22px; }
+  nav { left: 18px; width: min(245px, calc(100vw - 36px)); }
   section { padding: 52px 18px; }
   .contact-panel { padding: 25px 18px; }
 }
@@ -179,6 +215,9 @@ footer p { margin: 0; }
 <body>
 <header class="site-header">
   <div class="header-inner">
+    <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="main-navigation">
+      <span></span><span></span><span></span>
+    </button>
     <div class="brand">
       <div class="brand-mark" aria-hidden="true">◌</div>
       <div>
@@ -189,13 +228,13 @@ footer p { margin: 0; }
   </div>
 </header>
 
-<nav aria-label="Main navigation">
+<nav id="main-navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <a href="#home">Home</a>
-    <a href="#services">Services</a>
+    <a href="#services">Our Services</a>
+    <a href="#about">About Us</a>
     <a href="payment.html">Make a Payment</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
+    <a href="#contact">Contact Us</a>
   </div>
 </nav>
 
@@ -276,5 +315,28 @@ footer p { margin: 0; }
     <p>© 2026 Deepbluesea Services. All Rights Reserved.</p>
   </div>
 </footer>
+<script>
+const menuButton = document.querySelector('.menu-toggle');
+const mainNavigation = document.querySelector('#main-navigation');
+menuButton.addEventListener('click', () => {
+  const isOpen = mainNavigation.classList.toggle('open');
+  menuButton.setAttribute('aria-expanded', String(isOpen));
+  menuButton.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+});
+mainNavigation.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    mainNavigation.classList.remove('open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open navigation menu');
+  });
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    mainNavigation.classList.remove('open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open navigation menu');
+  }
+});
+</script>
 </body>
 </html>
